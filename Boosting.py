@@ -1,6 +1,8 @@
 from catboost import CatBoostClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
 
+from matplotlib import pyplot as plt
 from Base import Base
 from Table import table
 
@@ -16,3 +18,8 @@ class CatBoost(Base):
         table.add_row(['Бустинг "Градиентный бустинг"', accuracy_score(y_test_prediction, self.y_test) * 100,
                        accuracy_score(y_train_prediction, self.y_train) * 100])
 
+        vis = ConfusionMatrixDisplay(
+            confusion_matrix=confusion_matrix(self.y_test, y_test_prediction, labels=Boost_model.classes_),
+            display_labels=Boost_model.classes_)
+        vis.plot()
+        plt.show()
